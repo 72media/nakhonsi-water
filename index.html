@@ -112,9 +112,9 @@
     <div id="datetime"></div>
     <div class="container">
         <select id="cameraSelect">
-            <option value="NSW01" selected>น้ำคลองท่าใหญ่ </option>
-            <option value="NSW02">คลองท่าใหญ่ </option>
-            <option value="NSW03">คลองท่าใหญ่ </option>
+            <option value="NSW01" selected>น้ำคลองท่าใหญ่ ตัวที่ 1</option>
+            <option value="NSW02">คลองท่าใหญ่ ตัวที่ 2</option>
+            <option value="NSW03">คลองท่าใหญ่ ตัวที่ 3</option>
             <option value="NSW04">คลองป่าเหล้า</option>
             <option value="NSW05">รามราชท้ายน้ำ</option>
             <option value="NSW06">คลองหน้าเมือง</option>
@@ -132,8 +132,8 @@
             <option value="NSW18">สี่แยกมุมป้อมใน</option>
             <option value="NSW19">สี่แยกบ่ออ่าง-โรบินสันโอเชี่ยน</option>
             <option value="NSW20">สี่แยกประตูขาวใน</option>
-            <option value="NSW21">ถนนกรแก้ว</option>
-            <option value="NSW22">ถนนกรแก้ว</option>
+            <option value="NSW21">ถนนกรแก้ว ตัวที่ 1</option>
+            <option value="NSW22">น้ำคลองท่าใหญ่ ตัวที่ 2 (ใหม่)</option>
         </select>
         <div class="video-box">
             <h3 id="cameraName"></h3>
@@ -196,7 +196,7 @@
         let hls = null;
 
         // Initialize map
-        const map = L.map('map').setView([8.39983, 99.83395], 13);
+        const map = L.map('map').setView([8.39983, 99.83395], 19); // Set to max zoom
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
@@ -231,15 +231,20 @@
             'NSW18': [8.42762, 99.96650],
             'NSW19': [8.43803, 99.96618],
             'NSW20': [8.43085, 99.96624],
-            'NSW21': [8.426805, 99.967365],
-            'NSW22': [8.426805, 99.967365]
+            'NSW21': [8.42680, 99.96736],
+            'NSW22': [8.42680, 99.96736]
         };
+
 
         // Add markers with custom icon
         for (let cameraId in cameraCoords) {
             L.marker(cameraCoords[cameraId], { icon: customIcon }).addTo(map)
                 .bindPopup(`<b>${cameraSelect.querySelector(`option[value="${cameraId}"]`).text}</b><br>Camera ID: ${cameraId}`);
         }
+
+        // Fit map to bounds of all markers at max zoom
+        const bounds = L.latLngBounds(Object.values(cameraCoords));
+        map.fitBounds(bounds, { maxZoom: 19 });
 
         // Trigger NSW01 on page load
         window.addEventListener('load', function() {
@@ -274,7 +279,7 @@
             }
 
             if (cameraCoords[cameraId]) {
-                map.setView(cameraCoords[cameraId], 15);
+                map.setView(cameraCoords[cameraId], 19); // Max zoom
             }
         });
 
@@ -310,15 +315,8 @@
                 }
 
                 if (cameraCoords[cameraId]) {
-                    map.setView(cameraCoords[cameraId], 15);
+                    map.setView(cameraCoords[cameraId], 19); // Max zoom
                 }
-            } else {
-                if (hls) {
-                    hls.destroy();
-                }
-                videoPlayer.src = '';
-                cameraName.textContent = '';
-                errorMessage.textContent = '';
             }
         });
     </script>
