@@ -7,143 +7,304 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            background-color: #e6f3ff;
+            font-family: 'Kanit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
+        
         h1 {
             text-align: center;
-            color: #2c3e50;
-            font-size: 28px;
+            color: var(--text-color);
+            font-size: 2rem;
             margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 10px;
         }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        
         #datetime {
             text-align: center;
-            color: red;
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: inline-block;
         }
+        
         .container {
             text-align: center;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             background-color: white;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
         }
+        
+        .select-container {
+            position: relative;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+        
         select#cameraSelect {
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 10px;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 12px;
             width: 100%;
-            max-width: 400px;
-            border: 2px solid #3498db;
-            background-color: #f8f9fa;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-color);
+            background-color: var(--light-bg);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             appearance: none;
             background-image: url('data:image/svg+xml;utf8,<svg fill="%233498db" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
             background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-position: right 15px center;
             cursor: pointer;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
         }
+        
         select#cameraSelect:hover {
-            border-color: #2980b9;
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        select#cameraSelect option {
-            background-color: white;
-            color: #2c3e50;
-            padding: 10px;
+        
+        select#cameraSelect:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
         }
-        select#cameraSelect option:hover {
-            background-color: #3498db;
-            color: white;
-        }
+        
         .video-box {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 20px;
             border-radius: 15px;
             background-color: #ffffff;
-            border: 3px solid #3498db;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
         }
+        
         .video-box h3 {
             text-align: center;
-            color: #2c3e50;
-            font-size: 20px;
+            color: var(--text-color);
+            font-size: 1.3rem;
             margin-bottom: 15px;
-            font-weight: bold;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 10px;
         }
+        
+        .video-box h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
         video {
             width: 100%;
             height: auto;
+            max-height: 500px;
             background-color: #1a252f;
             border-radius: 10px;
-            border: 2px solid #3498db;
+            border: 1px solid #ddd;
+            transition: transform 0.3s ease;
         }
+        
+        video:hover {
+            transform: scale(1.01);
+        }
+        
         .error {
-            color: #e74c3c;
+            color: var(--accent-color);
             text-align: center;
-            font-size: 14px;
+            font-size: 0.9rem;
             margin-top: 10px;
-            font-weight: bold;
+            font-weight: 400;
         }
+        
         #map {
-            height: 400px;
+            height: 450px;
             width: 100%;
-            max-width: 900px;
-            margin-top: 20px;
+            margin-top: 25px;
             border-radius: 15px;
-            border: 2px solid #3498db;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--card-shadow);
+            z-index: 1;
+        }
+        
+        .map-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Layer Control Styles */
+        .leaflet-control-layers {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        .leaflet-control-layers-toggle {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/518/518705.png') !important;
+            background-size: 22px 22px !important;
+        }
+        
+        .leaflet-control-layers-expanded {
+            padding: 10px !important;
+        }
+        
+        .leaflet-control-layers label {
+            display: flex !important;
+            align-items: center !important;
+            margin-bottom: 8px !important;
+            cursor: pointer !important;
+            font-family: 'Kanit', sans-serif !important;
+        }
+        
+        .leaflet-control-layers-selector {
+            margin-right: 8px !important;
+        }
+        
+        .street-view-btn {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s;
+            font-family: 'Kanit', sans-serif;
+            margin-top: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .street-view-btn:hover {
+            background-color: #3367D6;
+        }
+        
+        .street-view-btn i {
+            font-style: normal;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            #map {
+                height: 300px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>เลือกกล้องดูระดับน้ำเทศบาลนคร</h1>
+    <h1>ระบบตรวจสอบระดับน้ำเทศบาลนครนครศรีธรรมราช</h1>
     <div id="datetime"></div>
     <div class="container">
-        <select id="cameraSelect">
-            <option value="NSW01" selected>น้ำคลองท่าใหญ่ ตัวที่ 1</option>
-            <option value="NSW02">คลองท่าใหญ่ ตัวที่ 2</option>
-            <option value="NSW03">คลองท่าใหญ่ ตัวที่ 3</option>
-            <option value="NSW04">คลองป่าเหล้า</option>
-            <option value="NSW05">รามราชท้ายน้ำ</option>
-            <option value="NSW06">คลองหน้าเมือง</option>
-            <option value="NSW07">สะพานราเมศวร์</option>
-            <option value="NSW08">คลองคูพาย (มหาราช)</option>
-            <option value="NSW09">แยกหมอปาน</option>
-            <option value="NSW10">ปั้มน้ำคลองลำเหมือง</option>
-            <option value="NSW11">ซอยรวมแพทย์</option>
-            <option value="NSW12">แยกสารีบุตรใน</option>
-            <option value="NSW13">วงเวียนนอกไร่</option>
-            <option value="NSW14">สี่แยกพะเนียดใน</option>
-            <option value="NSW15">สี่แยกหลังวัดชะเมา</option>
-            <option value="NSW16">ปากซอยต้นหว้า</option>
-            <option value="NSW17">ท้ายซอยเจริญสุข</option>
-            <option value="NSW18">สี่แยกมุมป้อมใน</option>
-            <option value="NSW19">สี่แยกบ่ออ่าง-โรบินสันโอเชี่ยน</option>
-            <option value="NSW20">สี่แยกประตูขาวใน</option>
-            <option value="NSW21">ถนนกรแก้ว ตัวที่ 1</option>
-            <option value="NSW22">ถนนกรแก้ว ตัวที่ 2</option>
-        </select>
+        <div class="select-container">
+            <select id="cameraSelect">
+                <option value="NSW01" selected>น้ำคลองท่าใหญ่ ตัวที่ 1</option>
+                <option value="NSW02">คลองท่าใหญ่ ตัวที่ 2</option>
+                <option value="NSW03">คลองท่าใหญ่ ตัวที่ 3</option>
+                <option value="NSW04">คลองป่าเหล้า</option>
+                <option value="NSW05">รามราชท้ายน้ำ</option>
+                <option value="NSW06">คลองหน้าเมือง</option>
+                <option value="NSW07">สะพานราเมศวร์</option>
+                <option value="NSW08">คลองคูพาย (มหาราช)</option>
+                <option value="NSW09">แยกหมอปาน</option>
+                <option value="NSW10">ปั้มน้ำคลองลำเหมือง</option>
+                <option value="NSW11">ซอยรวมแพทย์</option>
+                <option value="NSW12">แยกสารีบุตรใน</option>
+                <option value="NSW13">วงเวียนนอกไร่</option>
+                <option value="NSW14">สี่แยกพะเนียดใน</option>
+                <option value="NSW15">สี่แยกหลังวัดชะเมา</option>
+                <option value="NSW16">ปากซอยต้นหว้า</option>
+                <option value="NSW17">ท้ายซอยเจริญสุข</option>
+                <option value="NSW18">สี่แยกมุมป้อมใน</option>
+                <option value="NSW19">สี่แยกบ่ออ่าง-โรบินสันโอเชี่ยน</option>
+                <option value="NSW20">สี่แยกประตูขาวใน</option>
+                <option value="NSW21">ถนนกรแก้ว ตัวที่ 1</option>
+                <option value="NSW22">ถนนกรแก้ว ตัวที่ 2</option>
+            </select>
+        </div>
+        
         <div class="video-box">
             <h3 id="cameraName"></h3>
-            <video id="videoPlayer" controls></video>
+            <video id="videoPlayer" controls playsinline></video>
             <p id="errorMessage" class="error"></p>
         </div>
-        <div id="map"></div>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-overlay">แผนที่ระบบตรวจสอบระดับน้ำ</div>
+        </div>
     </div>
 
     <script>
+        // Update date and time
         function updateDateTime() {
             const now = new Date();
             const options = {
@@ -154,7 +315,8 @@
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
-                second: '2-digit'
+                second: '2-digit',
+                hour12: false
             };
             const formatter = new Intl.DateTimeFormat('th-TH', options);
             const formattedDateTime = formatter.format(now);
@@ -164,6 +326,7 @@
         updateDateTime();
         setInterval(updateDateTime, 1000);
 
+        // Camera streams
         const streams = {
             'NSW01': 'https://streaming.noc.nakhoncity.org/live/NSW01.m3u8',
             'NSW02': 'https://streaming.noc.nakhoncity.org/live/NSW02.m3u8',
@@ -189,6 +352,7 @@
             'NSW22': 'https://streaming.noc.nakhoncity.org/live/NSW22.m3u8'
         };
 
+        // DOM elements
         const cameraSelect = document.getElementById('cameraSelect');
         const videoPlayer = document.getElementById('videoPlayer');
         const cameraName = document.getElementById('cameraName');
@@ -196,17 +360,40 @@
         let hls = null;
 
         // Initialize map
-        const map = L.map('map').setView([8.39983, 99.83395], 19); // Set to max zoom
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+        const map = L.map('map').setView([8.39983, 99.83395], 15);
+        
+        // Define base layers
+        const baseLayers = {
+            "แผนที่ถนน": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }),
+            "แผนที่ Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                maxZoom: 19
+            }),
+            "แผนที่ Hybrid": L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                attribution: '© Google',
+                maxZoom: 20,
+                subdomains: ['mt0','mt1','mt2','mt3']
+            })
+        };
+
+        // Add default base layer
+        baseLayers["แผนที่ Hybrid"].addTo(map);
+
+        // Add layer control
+        L.control.layers(baseLayers, null, {
+            position: 'topright',
+            collapsed: false
         }).addTo(map);
 
-        // Custom icon
+        // Custom icon using the provided camera image
         const customIcon = L.icon({
-            iconUrl: 'https://i.imgur.com/HFleIAB.png?1',
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -38]
+            iconUrl: 'https://i.ibb.co/mf8MtwZ/camera.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
         });
 
         // Camera coordinates
@@ -235,89 +422,126 @@
             'NSW22': [8.42680, 99.96736]
         };
 
-
-        // Add markers with custom icon
-        for (let cameraId in cameraCoords) {
-            L.marker(cameraCoords[cameraId], { icon: customIcon }).addTo(map)
-                .bindPopup(`<b>${cameraSelect.querySelector(`option[value="${cameraId}"]`).text}</b><br>Camera ID: ${cameraId}`);
+        // Function to open Google Street View
+        function openStreetView(lat, lng) {
+            const streetViewUrl = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}`;
+            window.open(streetViewUrl, '_blank');
         }
 
-        // Fit map to bounds of all markers at max zoom
-        const bounds = L.latLngBounds(Object.values(cameraCoords));
-        map.fitBounds(bounds, { maxZoom: 19 });
+        // Add markers with custom icon and street view button in popup
+        const markers = {};
+        for (let cameraId in cameraCoords) {
+            const cameraText = cameraSelect.querySelector(`option[value="${cameraId}"]`).text;
+            
+            // Create street view button for popup
+            const streetViewBtn = document.createElement('button');
+            streetViewBtn.className = 'street-view-btn';
+            streetViewBtn.innerHTML = '<i>👁️</i> ดูพิกัดพื้นที่';
+            streetViewBtn.onclick = (e) => {
+                e.stopPropagation();
+                openStreetView(cameraCoords[cameraId][0], cameraCoords[cameraId][1]);
+            };
+            
+            // Create popup content
+            const popupContent = document.createElement('div');
+            popupContent.innerHTML = `<b>${cameraText}</b><br>รหัสกล้อง: ${cameraId}`;
+            popupContent.appendChild(document.createElement('br'));
+            popupContent.appendChild(streetViewBtn);
+            
+            // Add marker to map
+            markers[cameraId] = L.marker(cameraCoords[cameraId], { 
+                icon: customIcon,
+                title: cameraText
+            }).addTo(map).bindPopup(popupContent);
+        }
 
-        // Trigger NSW01 on page load
-        window.addEventListener('load', function() {
-            cameraSelect.value = 'NSW01';
-            const cameraId = cameraSelect.value;
+        // Fit map to bounds of all markers
+        const bounds = L.latLngBounds(Object.values(cameraCoords));
+        map.fitBounds(bounds);
+
+        // Function to load video stream
+        function loadVideoStream(cameraId) {
+            if (!cameraId || !streams[cameraId]) return;
+            
             const streamUrl = streams[cameraId];
             const cameraLabel = cameraSelect.options[cameraSelect.selectedIndex].text;
+            
+            // Update camera name (without street view button)
             cameraName.textContent = cameraLabel;
+            
+            errorMessage.textContent = '';
 
             if (hls) {
                 hls.destroy();
             }
 
             if (Hls.isSupported()) {
-                hls = new Hls();
+                hls = new Hls({
+                    maxBufferLength: 30,
+                    maxMaxBufferLength: 600,
+                    maxBufferSize: 60 * 1000 * 1000,
+                    maxBufferHole: 5.0
+                });
                 hls.loadSource(streamUrl);
                 hls.attachMedia(videoPlayer);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    videoPlayer.play().catch(err => console.log(`Playback error for ${cameraId}: ${err}`));
+                    videoPlayer.play().catch(err => {
+                        errorMessage.textContent = 'ไม่สามารถเริ่มเล่นวิดีโอได้';
+                        console.error(`Playback error for ${cameraId}: ${err}`);
+                    });
                 });
                 hls.on(Hls.Events.ERROR, (event, data) => {
                     if (data.fatal) {
-                        errorMessage.textContent = `ข้อผิดพลาด: ${data.details}`;
+                        errorMessage.textContent = `เกิดข้อผิดพลาด: ${data.details}`;
                         console.error(`Fatal error with ${cameraId}: ${data.details}`);
+                        switch(data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                loadVideoStream(cameraId);
+                                break;
+                        }
                     }
                 });
             } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
                 videoPlayer.src = streamUrl;
-                videoPlayer.play().catch(err => console.log(`Native playback error for ${cameraId}: ${err}`));
+                videoPlayer.play().catch(err => {
+                    errorMessage.textContent = 'ไม่สามารถเริ่มเล่นวิดีโอได้';
+                    console.error(`Native playback error for ${cameraId}: ${err}`);
+                });
             } else {
-                errorMessage.textContent = 'เบราว์เซอร์นี้ไม่รองรับ HLS';
+                errorMessage.textContent = 'เบราว์เซอร์นี้ไม่รองรับการเล่นวิดีโอแบบ HLS';
             }
 
+            // Center map on selected camera and highlight marker
             if (cameraCoords[cameraId]) {
-                map.setView(cameraCoords[cameraId], 19); // Max zoom
+                map.setView(cameraCoords[cameraId], 17);
+                
+                // Reset all markers to default appearance
+                for (let id in markers) {
+                    markers[id].setZIndexOffset(0);
+                    if (id === cameraId) {
+                        // Highlight selected marker
+                        markers[id].setZIndexOffset(1000);
+                        markers[id].openPopup();
+                    }
+                }
             }
+        }
+
+        // Load initial camera (NSW01)
+        window.addEventListener('load', function() {
+            cameraSelect.value = 'NSW01';
+            loadVideoStream('NSW01');
         });
 
+        // Handle camera selection change
         cameraSelect.addEventListener('change', function() {
-            const cameraId = this.value;
-            if (cameraId) {
-                const streamUrl = streams[cameraId];
-                const cameraLabel = this.options[this.selectedIndex].text;
-                cameraName.textContent = cameraLabel;
-
-                if (hls) {
-                    hls.destroy();
-                }
-
-                if (Hls.isSupported()) {
-                    hls = new Hls();
-                    hls.loadSource(streamUrl);
-                    hls.attachMedia(videoPlayer);
-                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        videoPlayer.play().catch(err => console.log(`Playback error for ${cameraId}: ${err}`));
-                    });
-                    hls.on(Hls.Events.ERROR, (event, data) => {
-                        if (data.fatal) {
-                            errorMessage.textContent = `ข้อผิดพลาด: ${data.details}`;
-                            console.error(`Fatal error with ${cameraId}: ${data.details}`);
-                        }
-                    });
-                } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-                    videoPlayer.src = streamUrl;
-                    videoPlayer.play().catch(err => console.log(`Native playback error for ${cameraId}: ${err}`));
-                } else {
-                    errorMessage.textContent = 'เบราว์เซอร์นี้ไม่รองรับ HLS';
-                }
-
-                if (cameraCoords[cameraId]) {
-                    map.setView(cameraCoords[cameraId], 19); // Max zoom
-                }
-            }
+            loadVideoStream(this.value);
         });
     </script>
 </body>
