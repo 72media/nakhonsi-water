@@ -16,17 +16,65 @@
             --text-color: #2c3e50;
             --light-bg: #f8f9fa;
             --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
         }
         
         body {
             font-family: 'Kanit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f5f7fa;
+            background: var(--bg-gradient);
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        /* สไตล์ธีมสีต่างๆ */
+        body.theme-default {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        }
+
+        body.theme-blue {
+            --primary-color: #1e88e5;
+            --secondary-color: #1565c0;
+            --accent-color: #ff5252;
+            --text-color: #263238;
+            --light-bg: #e3f2fd;
+            --bg-gradient: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+        }
+
+        body.theme-green {
+            --primary-color: #43a047;
+            --secondary-color: #2e7d32;
+            --accent-color: #ff7043;
+            --text-color: #1b5e20;
+            --light-bg: #e8f5e9;
+            --bg-gradient: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+        }
+
+        body.theme-purple {
+            --primary-color: #8e24aa;
+            --secondary-color: #6a1b9a;
+            --accent-color: #ffab40;
+            --text-color: #4a148c;
+            --light-bg: #f3e5f5;
+            --bg-gradient: linear-gradient(135deg, #e1bee7 0%, #ce93d8 100%);
+        }
+
+        body.theme-dark {
+            --primary-color: #90caf9;
+            --secondary-color: #64b5f6;
+            --accent-color: #ff7043;
+            --text-color: #e0e0e0;
+            --light-bg: #424242;
+            --bg-gradient: linear-gradient(135deg, #212121 0%, #424242 100%);
         }
         
         h1 {
@@ -57,7 +105,7 @@
             font-weight: 500;
             font-size: 1.1rem;
             margin-bottom: 25px;
-            background-color: white;
+            background-color: rgba(255,255,255,0.8);
             padding: 8px 15px;
             border-radius: 50px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
@@ -68,11 +116,16 @@
             text-align: center;
             width: 100%;
             max-width: 1000px;
-            background-color: white;
+            background-color: rgba(255,255,255,0.9);
             padding: 30px;
             border-radius: 20px;
             box-shadow: var(--card-shadow);
             margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .select-container {
@@ -113,11 +166,17 @@
             margin-top: 25px;
             padding: 20px;
             border-radius: 15px;
-            background-color: #ffffff;
+            background-color: rgba(255,255,255,0.8);
             border: 2px solid var(--primary-color);
             box-shadow: var(--card-shadow);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .video-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         
         .video-box h3 {
@@ -171,6 +230,11 @@
             border: 2px solid var(--primary-color);
             box-shadow: var(--card-shadow);
             z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        #map:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         
         .map-container {
@@ -183,12 +247,13 @@
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-            background: white;
+            background: rgba(255,255,255,0.9);
             padding: 8px 12px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             font-size: 0.8rem;
             font-weight: 500;
+            color: var(--text-color);
         }
         
         /* Layer Control Styles */
@@ -220,7 +285,7 @@
         }
         
         .street-view-btn {
-            background-color: #4285F4;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 5px 10px;
@@ -238,11 +303,64 @@
         }
         
         .street-view-btn:hover {
-            background-color: #3367D6;
+            background-color: var(--secondary-color);
         }
         
         .street-view-btn i {
             font-style: normal;
+        }
+
+        /* Theme Selector Styles */
+        .theme-selector {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-btn.active {
+            transform: scale(1.1);
+            border: 2px solid var(--text-color);
+        }
+
+        .theme-default {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        }
+
+        .theme-blue {
+            background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+        }
+
+        .theme-green {
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+        }
+
+        .theme-purple {
+            background: linear-gradient(135deg, #e1bee7 0%, #ce93d8 100%);
+        }
+
+        .theme-dark {
+            background: linear-gradient(135deg, #212121 0%, #424242 100%);
         }
         
         @media (max-width: 768px) {
@@ -257,11 +375,22 @@
             #map {
                 height: 300px;
             }
+
+            .theme-selector {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px;
+            }
+
+            .theme-btn {
+                width: 25px;
+                height: 25px;
+            }
         }
     </style>
 </head>
-<body>
-    <h1>ระบบตรวจสอบระดับน้ำเทศบาลนครนครศรีธรรมราช</h1>
+<body class="theme-default">
+    <h1>กล้องดูระดับน้ำ เมืองคอนและทุ่งสง</h1>
     <div id="datetime"></div>
     <div class="container">
         <div class="select-container">
@@ -288,6 +417,9 @@
                 <option value="NSW20">สี่แยกประตูขาวใน</option>
                 <option value="NSW21">ถนนกรแก้ว ตัวที่ 1</option>
                 <option value="NSW22">ถนนกรแก้ว ตัวที่ 2</option>
+                <option value="Khlong ThaLao">คลองท่าเลา (ทุ่งสง)</option>
+                <option value="Khlong ThaLhon">คลองท่าโหลน (ทุ่งสง)</option>
+                <option value="Khlong ThaPhae">คลองท่าแพ (ทุ่งสง)</option>
             </select>
         </div>
         
@@ -301,6 +433,15 @@
             <div id="map"></div>
             <div class="map-overlay">แผนที่ระบบตรวจสอบระดับน้ำ</div>
         </div>
+    </div>
+
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <div class="theme-btn theme-default active" data-theme="default" title="ธีมมาตรฐาน"></div>
+        <div class="theme-btn theme-blue" data-theme="blue" title="ธีมสีน้ำเงิน"></div>
+        <div class="theme-btn theme-green" data-theme="green" title="ธีมสีเขียว"></div>
+        <div class="theme-btn theme-purple" data-theme="purple" title="ธีมสีม่วง"></div>
+        <div class="theme-btn theme-dark" data-theme="dark" title="ธีมสีเข้ม"></div>
     </div>
 
     <script>
@@ -349,7 +490,10 @@
             'NSW19': 'https://streaming.noc.nakhoncity.org/live/NSW19.m3u8',
             'NSW20': 'https://streaming.noc.nakhoncity.org/live/NSW20.m3u8',
             'NSW21': 'https://streaming.noc.nakhoncity.org/live/NSW21.m3u8',
-            'NSW22': 'https://streaming.noc.nakhoncity.org/live/NSW22.m3u8'
+            'NSW22': 'https://streaming.noc.nakhoncity.org/live/NSW22.m3u8',
+            'Khlong ThaLao': 'https://tsgcctv.fortiddns.com:8088/hls/KhlongThaLao.m3u8',
+            'Khlong ThaLhon': 'https://tsgcctv.fortiddns.com:8088/hls/KhlongThaLhon.m3u8',
+            'Khlong ThaPhae': 'https://tsgcctv.fortiddns.com:8088/hls/KhlongThaPhae.m3u8'
         };
 
         // DOM elements
@@ -388,8 +532,8 @@
             collapsed: false
         }).addTo(map);
 
-        // Custom icon using the provided camera image
-        const customIcon = L.icon({
+        // Custom icon for all cameras (same icon for both Nakhon Si Thammarat and Thungsong)
+        const cameraIcon = L.icon({
             iconUrl: 'https://i.ibb.co/mf8MtwZ/camera.png',
             iconSize: [32, 32],
             iconAnchor: [16, 32],
@@ -419,7 +563,10 @@
             'NSW19': [8.43803, 99.96618],
             'NSW20': [8.43085, 99.96624],
             'NSW21': [8.4259187, 99.9676393],
-            'NSW22': [8.4260081, 99.9676147]
+            'NSW22': [8.4260081, 99.9676147],
+            'Khlong ThaLao': [8.1674212, 99.6741829],
+            'Khlong ThaLhon': [8.1664871, 99.7043312],
+            'Khlong ThaPhae': [8.1508797, 99.6932994]
         };
 
         // Function to open Google Street View
@@ -431,7 +578,18 @@
         // Add markers with custom icon and street view button in popup
         const markers = {};
         for (let cameraId in cameraCoords) {
-            const cameraText = cameraSelect.querySelector(`option[value="${cameraId}"]`).text;
+            if (!cameraCoords[cameraId]) {
+                console.warn(`Missing coordinates for camera: ${cameraId}`);
+                continue;
+            }
+            
+            const cameraOption = cameraSelect.querySelector(`option[value="${cameraId}"]`);
+            if (!cameraOption) {
+                console.warn(`No select option found for camera: ${cameraId}`);
+                continue;
+            }
+            
+            const cameraText = cameraOption.text;
             
             // Create street view button for popup
             const streetViewBtn = document.createElement('button');
@@ -448,9 +606,9 @@
             popupContent.appendChild(document.createElement('br'));
             popupContent.appendChild(streetViewBtn);
             
-            // Add marker to map
+            // Add marker to map (using same icon for all cameras)
             markers[cameraId] = L.marker(cameraCoords[cameraId], { 
-                icon: customIcon,
+                icon: cameraIcon,
                 title: cameraText
             }).addTo(map).bindPopup(popupContent);
         }
@@ -461,12 +619,16 @@
 
         // Function to load video stream
         function loadVideoStream(cameraId) {
-            if (!cameraId || !streams[cameraId]) return;
+            if (!cameraId || !streams[cameraId]) {
+                errorMessage.textContent = 'ไม่พบสตรีมวิดีโอสำหรับกล้องนี้';
+                console.error(`No stream found for camera: ${cameraId}`);
+                return;
+            }
             
             const streamUrl = streams[cameraId];
             const cameraLabel = cameraSelect.options[cameraSelect.selectedIndex].text;
             
-            // Update camera name (without street view button)
+            // Update camera name
             cameraName.textContent = cameraLabel;
             
             errorMessage.textContent = '';
@@ -533,6 +695,30 @@
             }
         }
 
+        // Theme switching functionality
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        themeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                themeButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Change theme
+                const theme = this.getAttribute('data-theme');
+                document.body.className = `theme-${theme}`;
+                
+                // Save theme preference to localStorage
+                localStorage.setItem('selectedTheme', theme);
+            });
+        });
+
+        // Load saved theme from localStorage
+        const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+        document.body.className = `theme-${savedTheme}`;
+        document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`).classList.add('active');
+
         // Load initial camera (NSW01)
         window.addEventListener('load', function() {
             cameraSelect.value = 'NSW01';
@@ -542,6 +728,12 @@
         // Handle camera selection change
         cameraSelect.addEventListener('change', function() {
             loadVideoStream(this.value);
+        });
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.message, 'at', e.filename, 'line:', e.lineno);
+            errorMessage.textContent = 'เกิดข้อผิดพลาดในระบบ กรุณารีเฟรชหน้าเว็บ';
         });
     </script>
 </body>
